@@ -19,6 +19,8 @@ public class PostsControllers {
 
 
 
+
+    // getting posts by id using pathVariable
     @GetMapping("/{id}")
     public ResponseEntity postsOfUsers(RestTemplate restTemplate,
                                        @PathVariable("id") int postId) {
