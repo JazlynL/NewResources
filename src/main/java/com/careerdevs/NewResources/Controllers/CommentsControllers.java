@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
@@ -31,6 +28,22 @@ public class CommentsControllers {
             System.out.println(e.getClass());
             return e.getMessage();
         }
+    }
+
+    // will refactor this code later once Fields are created  in the model classes
+    @DeleteMapping("/{id}")
+
+    public Object deleteComments( RestTemplate restTemplate, @PathVariable("id") String id){
+        try{String url = "https://gorest.co.in/public/v2/comments/"+ id;
+        String token = env.getProperty("API_KEY");
+        url += "?access-token="+token;
+        restTemplate.delete(url);
+        return "Successfully deleted this user "+ id;
+        }catch(Exception e){
+            System.out.println(e.getClass());
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 }
